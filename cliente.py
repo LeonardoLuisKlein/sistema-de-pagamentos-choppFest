@@ -1,15 +1,15 @@
 import socket
 
 saldo = input("Digite o saldo: ")
-seletor = input("Digite o produto. Opções: 1 = chopp R$ 10.00. 2 = cachorro quente R$ 8.00")
+seletor = input("Digite o produto. Opções: 1 = chopp. 2 = cachorro quente\n")
 
 # Configurações do servidor: IP e Porta
 if seletor == "1":
     print("Você escolheu o chopp")
-    server_ip = 'SERVIDOR CHOPP'
+    server_ip = 'ip chopp'
 elif seletor == "2":
     print("Você escolheu o cachorro quente")
-    server_ip = 'SERVIDOR DOGÃO'
+    server_ip = 'ip hotdog'
 else:
     print("Opção inválida.")
     exit()

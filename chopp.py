@@ -2,7 +2,7 @@ import socket
 from datetime import datetime
 
 # Configurações do servidor: IP e Porta
-server_ip = 'INSIRA O IP DO SERVIDOR'
+server_ip = 'Insira o ip'
 server_port = 12345
 
 # Variável para acompanhar o valor total de vendas
@@ -36,24 +36,25 @@ try:
         valores = client_socket.recv(1024).decode().split(",")
         saldo = float(valores[0])
         codigo_cupom = valores[1]
-        print("Valor da transação recebido: ", preco_produto)
-
+        print("Valor da transação recebido: ", saldo)
+        preco_produto_desconto = preco_produto
+        
+        # Verifica se há código de cupom e aplica o desconto correspondente
+        if codigo_cupom in cupons:
+            desconto = cupons[codigo_cupom]
+            valor_desconto = preco_produto * desconto
+            preco_produto_desconto -= valor_desconto    
+        
         # Processamento da transação (simulado)
         if saldo >= preco_produto:
-            novo_saldo = saldo - preco_produto
+            novo_saldo = saldo - preco_produto_desconto
             data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-            # Verifica se há código de cupom e aplica o desconto correspondente
-            if codigo_cupom in cupons:
-                desconto = cupons[codigo_cupom]
-                valor_desconto = preco_produto * desconto
-                preco_produto -= valor_desconto
+            if preco_produto > preco_produto_desconto:
                 resposta = f"Data e Hora: {data_hora}\nNovo saldo: R${novo_saldo}\nValor do produto: R${preco_produto}\nDesconto aplicado: R${valor_desconto}"
             else:
                 resposta = f"Data e Hora: {data_hora}\nNovo saldo: R${novo_saldo}\nValor do produto: R${preco_produto}"
-                
             # Atualiza o valor total de vendas
-            valor_total_vendas += preco_produto
+            valor_total_vendas += preco_produto_desconto
         else:
             resposta = "Pagamento negado: valor do produto é inferior ao valor da transação."
 
